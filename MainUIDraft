@@ -39,6 +39,7 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
+import cryptoTrader.utils.CryptocoinList;
 import cryptoTrader.utils.DataVisualizationCreator;
 import cryptoTrader.utils.Trade;
 import cryptoTrader.utils.TradingBroker;
@@ -88,36 +89,6 @@ public class MainUI extends JFrame implements ActionListener {
 
 //		north.add(strategyList);
 
-/*		
-		JLabel from = new JLabel("From");
-		UtilDateModel dateModel = new UtilDateModel();
-		Properties p = new Properties();
-		p.put("text.today", "Today");
-		p.put("text.month", "Month");
-		p.put("text.year", "Year");
-		JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, p);
-		@SuppressWarnings("serial")
-		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new AbstractFormatter() {
-			private String datePatern = "dd/MM/yyyy";
-
-			private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePatern);
-
-			@Override
-			public Object stringToValue(String text) throws ParseException {
-				return dateFormatter.parseObject(text);
-			}
-
-			@Override
-			public String valueToString(Object value) throws ParseException {
-				if (value != null) {
-					Calendar cal = (Calendar) value;
-					return dateFormatter.format(cal.getTime());
-				}
-
-				return "";
-			}
-		});
-*/
 		JButton trade = new JButton("Perform Trade");
 		trade.setActionCommand("refresh");
 		trade.addActionListener(this);
@@ -138,8 +109,10 @@ public class MainUI extends JFrame implements ActionListener {
 		brokers.add(firstBroker);
 		brokerCount++;
 		firstBroker.setName((String) dtm.getValueAt(0, 0));
-		// set the cryptoList
-		// set the strategy 
+		String[] coins = ((String) dtm.getValueAt(0, 1)).split(",");
+		CryptocoinList newList = new CryptocoinList(coins);
+		firstBroker.setList((CryptocoinList) dtm.getValueAt(0, 1));
+		firstBroker.setStrategy((String) dtm.getValueAt(0, 2));
 		
 		Vector<String> strategyNames = new Vector<String>();
 		strategyNames.add("None");
