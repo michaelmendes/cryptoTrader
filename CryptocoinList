@@ -1,0 +1,25 @@
+package cryptoTrader.utils;
+
+import java.util.ArrayList;
+
+public class CryptocoinList {
+	
+	private Cryptocoin[] cryptoOfInterest;
+	private int numCoins = 0;
+	
+	public CryptocoinList(String[] coins) {
+		for (int i=0; i<coins.length; i++) {
+			Cryptocoin newCoin = new Cryptocoin(coins[i]);
+			cryptoOfInterest[numCoins] = newCoin;
+			numCoins++;
+		}
+	}
+	
+	public void addCoin(Cryptocoin newCoin) {
+		cryptoOfInterest[numCoins] = newCoin;
+	}
+	
+	public Cryptocoin[] getList() {
+		return cryptoOfInterest;
+	}
+}
