@@ -39,15 +39,20 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
+import cryptoTrader.utils.CryptocoinList;
 import cryptoTrader.utils.DataVisualizationCreator;
+import cryptoTrader.utils.Operation;
+import cryptoTrader.utils.TradingBroker;
 
 public class MainUI extends JFrame implements ActionListener {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	private static MainUI instance;
+	// stores trading brokers
+	private ArrayList<TradingBroker> brokers;
+	private int brokerCount = 0;
+	
 	private JPanel stats, chartPanel, tablePanel;
 
 	// Should be a reference to a separate object in actual implementation
@@ -72,7 +77,7 @@ public class MainUI extends JFrame implements ActionListener {
 		return instance;
 	}
 
-	private MainUI() {
+	public MainUI() {
 
 		// Set window title
 		super("Crypto Trading Tool");
@@ -84,52 +89,61 @@ public class MainUI extends JFrame implements ActionListener {
 
 //		north.add(strategyList);
 
-		// Set bottom bar
-//		JLabel from = new JLabel("From");
-//		UtilDateModel dateModel = new UtilDateModel();
-//		Properties p = new Properties();
-//		p.put("text.today", "Today");
-//		p.put("text.month", "Month");
-//		p.put("text.year", "Year");
-//		JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, p);
-//		@SuppressWarnings("serial")
-//		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new AbstractFormatter() {
-//			private String datePatern = "dd/MM/yyyy";
-//
-//			private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePatern);
-//
-//			@Override
-//			public Object stringToValue(String text) throws ParseException {
-//				return dateFormatter.parseObject(text);
-//			}
-//
-//			@Override
-//			public String valueToString(Object value) throws ParseException {
-//				if (value != null) {
-//					Calendar cal = (Calendar) value;
-//					return dateFormatter.format(cal.getTime());
-//				}
-//
-//				return "";
-//			}
-//		});
+/*		
+		JLabel from = new JLabel("From");
+		UtilDateModel dateModel = new UtilDateModel();
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, p);
+		@SuppressWarnings("serial")
+		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new AbstractFormatter() {
+			private String datePatern = "dd/MM/yyyy";
 
+			private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePatern);
+
+			@Override
+			public Object stringToValue(String text) throws ParseException {
+				return dateFormatter.parseObject(text);
+			}
+
+			@Override
+			public String valueToString(Object value) throws ParseException {
+				if (value != null) {
+					Calendar cal = (Calendar) value;
+					return dateFormatter.format(cal.getTime());
+				}
+
+				return "";
+			}
+		});
+*/
 		JButton trade = new JButton("Perform Trade");
 		trade.setActionCommand("refresh");
 		trade.addActionListener(this);
-
-
-
-		JPanel south = new JPanel();
 		
+		// Set bottom bar
+		JPanel south = new JPanel();
 		south.add(trade);
-
+		
+		// setup table 
 		dtm = new DefaultTableModel(new Object[] { "Trading Client", "Coin List", "Strategy Name" }, 1);
 		table = new JTable(dtm);
 		// table.setPreferredSize(new Dimension(600, 300));
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Trading Client Actions",
 				TitledBorder.CENTER, TitledBorder.TOP));
+		// start with one broker in table
+		TradingBroker firstBroker = new TradingBroker();
+		brokers.add(firstBroker);
+		brokerCount++;
+		firstBroker.setName((String) dtm.getValueAt(0, 0));
+		String[] coins = ((String) dtm.getValueAt(0, 1)).split(",");
+		CryptocoinList newList = new CryptocoinList(coins);
+		firstBroker.setList((CryptocoinList) dtm.getValueAt(0, 1));
+		firstBroker.setStrategy((String) dtm.getValueAt(0, 2));
+		
 		Vector<String> strategyNames = new Vector<String>();
 		strategyNames.add("None");
 		strategyNames.add("Strategy-A");
@@ -139,6 +153,7 @@ public class MainUI extends JFrame implements ActionListener {
 		TableColumn strategyColumn = table.getColumnModel().getColumn(2);
 		JComboBox comboBox = new JComboBox(strategyNames);
 		strategyColumn.setCellEditor(new DefaultCellEditor(comboBox));
+		
 		JButton addRow = new JButton("Add Row");
 		JButton remRow = new JButton("Remove Row");
 		addRow.setActionCommand("addTableRow");
@@ -149,11 +164,9 @@ public class MainUI extends JFrame implements ActionListener {
 		scrollPane.setPreferredSize(new Dimension(800, 300));
 		table.setFillsViewportHeight(true);
 		
-
+		// table configuration options 
 		JPanel east = new JPanel();
-//		east.setLayout();
 		east.setLayout(new BoxLayout(east, BoxLayout.Y_AXIS));
-//		east.add(table);
 		east.add(scrollPane);
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
@@ -163,7 +176,7 @@ public class MainUI extends JFrame implements ActionListener {
 //		east.add(selectedTickerListLabel);
 //		east.add(selectedTickersScrollPane);
 
-		// Set charts region
+		// set charts region
 		JPanel west = new JPanel();
 		west.setPreferredSize(new Dimension(1250, 650));
 		stats = new JPanel();
@@ -175,7 +188,7 @@ public class MainUI extends JFrame implements ActionListener {
 		getContentPane().add(east, BorderLayout.EAST);
 		getContentPane().add(west, BorderLayout.CENTER);
 		getContentPane().add(south, BorderLayout.SOUTH);
-//		getContentPane().add(west, BorderLayout.WEST);
+
 	}
 
 	public void updateStats(JComponent component) {
@@ -187,7 +200,7 @@ public class MainUI extends JFrame implements ActionListener {
 		JFrame frame = MainUI.getInstance();
 		frame.setSize(900, 600);
 		frame.pack();
-		frame.setVisible(true);
+		frame.setVisible(true);		
 	}
 
 	@Override
@@ -218,10 +231,16 @@ public class MainUI extends JFrame implements ActionListener {
 			stats.removeAll();
 			DataVisualizationCreator creator = new DataVisualizationCreator();
 			creator.createCharts();
-		} else if ("addTableRow".equals(command)) {
+		} 
+		else if ("addTableRow".equals(command)) {
 			dtm.addRow(new String[3]);
-		} else if ("remTableRow".equals(command)) {
+			TradingBroker newBroker = new TradingBroker();
+			brokers.add(newBroker);
+			brokerCount++;
+		} 
+		else if ("remTableRow".equals(command)) {
 			int selectedRow = table.getSelectedRow();
+			brokers.remove(selectedRow);
 			if (selectedRow != -1)
 				dtm.removeRow(selectedRow);
 		}
