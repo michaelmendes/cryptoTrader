@@ -28,8 +28,9 @@ public class Operation {
 	}
 	
 	
-	public void print() {
-		System.out.println(tradingBroker + " " + Arrays.toString(coins) + " " + tradingStrategy);
+	public void executeTrade() {
+		TradingStrategy obj = new TradingStrategy(tradingStrategy, coins);
+		TradingActivity data = new TradingActivity(obj.performTrade());
+		Result display = new Result(data);
 	}
-	
 }
