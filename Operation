@@ -1,0 +1,34 @@
+package cryptoTrader.utils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class Operation {
+		
+	private ArrayList<TradingBroker> tradeBrokers; 
+	private ArrayList<TradeActivity> tradeActivities;
+		
+	public Operation(ArrayList<TradingBroker> brokerList) {
+		tradeBrokers = brokerList; 
+	}
+	
+	public void executeTrade() {
+		Iterator<TradingBroker> brokers = tradeBrokers.iterator();
+		// perform actions for each broker from table 
+		while (brokers.hasNext()) {
+			TradingBroker currBroker = brokers.next();
+			String name = currBroker.getName();
+			CryptocoinList coinList = currBroker.getCoinList();
+			String strategyName = currBroker.getStrategy();
+			
+			// attempt to perform the trade 
+			TradingStrategy strategy = new TradingStrategy(strategyName, coinList);
+			String tradeResult = strategy.performTrade();
+			String[] details = tradeResult.split(" ");
+			
+			// save the results of the trade as a trade activity object 
+			TradeActivity activity = new TradeActivity(details[0],details[1],details[2]);
+			tradeActivities.add(activity);
+		}
+	}
+}
