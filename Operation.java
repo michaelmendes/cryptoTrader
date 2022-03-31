@@ -1,36 +1,42 @@
-package cryptoTrader.gui;
+package cryptoTrader.utils;
+
 
 import java.util.Arrays;
 
 public class Operation {
 		
-	private String tradingBroker;
-	private String [] coins;
+	private TradingBroker tradingBroker;
+	private CryptoCoinList coins;
 	private String tradingStrategy;
 		
-	public Operation(String tradingBroker, String [] coins, String tradingStrategy) {
-		this.tradingBroker = tradingBroker;	
-		this.coins = coins;
+	public Operation(String tradingBroker, int tradingBrokerID, String[] coinList, String tradingStrategy) {
+		this.tradingBroker = new TradingBroker(tradingBroker, tradingBrokerID);	
+		coins = new CryptoCoinList(coinList);
 		this.tradingStrategy = tradingStrategy;
 		
 	}
 	
-	public String getTradingBroker() {
+	public TradingBroker getTradingBroker() {
 		return tradingBroker;
 	}
 	
-	public String[] getCoins() {
+	public CryptoCoinList getCoins() {
 		return coins;
 	}
 	
-	public String tradingStrategy() {
+	public String getTradingStrategy() {
 		return tradingStrategy;
 	}
 	
 	
-	public void executeTrade() {
-		TradingStrategy obj = new TradingStrategy(tradingStrategy, coins);
-		TradingActivity data = new TradingActivity(obj.performTrade());
-		Result display = new Result(data);
+	public TradeActivity executeTrade() {
+		TradeStrategy obj = new TradeStrategy(tradingStrategy, coins);
+		String data = obj.performTrade();
+		//String[] dataList = data.split(" ");
+		CryptoCoin[] list = coins.getCryptoCoinList();
+		String[] dataList = {"buy", "100", "bitcoin"};
+		CryptoCoin coin = new CryptoCoin(dataList[2]);
+		TradeActivity activity = new TradeActivity(tradingBroker, dataList[0], dataList[1], coin, tradingStrategy);
+		return activity;
 	}
 }

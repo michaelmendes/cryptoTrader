@@ -1,6 +1,7 @@
 package cryptoTrader.utils;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -31,12 +32,12 @@ import cryptoTrader.gui.MainUI;
 
 public class DataVisualizationCreator {
 	
-	public void createCharts() {
+	public void createCharts(ArrayList<TradeActivity> trade) {
 //		createTextualOutput();
-		createTableOutput();
+		createTableOutput(trade);
 //		createTimeSeries();
 //		createScatter();
-		createBar();
+		createBar(trade);
 	}
 
 	private void createTextualOutput() {
@@ -58,26 +59,49 @@ public class DataVisualizationCreator {
 //		MainUI.getInstance().updateStats(scrollPane);
 	}
 	
-	private void createTableOutput() {
+	private Object[][] insertRow(Object[][] arr, int rowNum, Object[] newRow){
+		Object[][] newArr = new Object[arr.length + 1][];		
+		for(int i = 0; i < arr.length; i++) {
+			newArr[i] = arr[i];
+		}
+		newArr[rowNum] = newRow;
+		return newArr;
+	}
+	
+	
+	private void createTableOutput(ArrayList<TradeActivity> arr) {
 		// Dummy dates for demo purposes. These should come from selection menu
 		Object[] columnNames = {"Trader","Strategy","CryptoCoin","Action","Quantity","Price","Date"};
+		Object[][] data = new Object[0][7];
+
+		for(int i = 0; i < arr.size(); i++) {
+			Object[] newRow = new Object[7];
+			newRow[0] = arr.get(i).getTradingBroker().getTradingBroker();
+			newRow[1] = arr.get(i).getStrategy();
+			newRow[2] = arr.get(i).getCoin().getCoinName();
+			newRow[3] = arr.get(i).getAction();
+			newRow[4] = arr.get(i).getQuantity().toString();
+			newRow[5] = arr.get(i).getCoin().getCoinPrice();
+			newRow[6] = "31-March-2022";
+			data = insertRow(data, i, newRow);
+		}
 		
 		// Dummy data for demo purposes. These should come from actual fetcher
-		Object[][] data = {
-				{"Trader-1", "Strategy-A", "ETH", "Buy", "500", "150.3","13-January-2022"},
-				{"Trader-2", "Strategy-B", "BTC", "Sell", "200", "50.2","13-January-2022"},
-				{"Trader-3", "Strategy-C", "USDT", "Buy", "1000", "2.59","15-January-2022"},
-				{"Trader-1", "Strategy-A", "USDC", "Buy", "500", "150.3","16-January-2022"},
-				{"Trader-2", "Strategy-B", "ADA", "Sell", "200", "50.2","16-January-2022"},
-				{"Trader-3", "Strategy-C", "SOL", "Buy", "1000", "2.59","17-January-2022"},
-				{"Trader-1", "Strategy-A", "ONE", "Buy", "500", "150.3","17-January-2022"},
-				{"Trader-2", "Strategy-B", "MANA", "Sell", "200", "50.2","17-January-2022"},
-				{"Trader-3", "Strategy-C", "AVAX", "Buy", "1000", "2.59","19-January-2022"},
-				{"Trader-1", "Strategy-A", "LUNA", "Buy", "500", "150.3","19-January-2022"},
-				{"Trader-2", "Strategy-B", "FTM", "Sell", "200", "50.2","19-January-2022"},
-				{"Trader-3", "Strategy-C", "HNT", "Buy", "1000", "2.59","20-January-2022"}
-		};
-		
+//		Object [][] data = {
+//				{"Trader-1", "Strategy-A", "ETH", "Buy", "500", "150.3","13-January-2022"},
+//				{"Trader-2", "Strategy-B", "BTC", "Sell", "200", "50.2","13-January-2022"},
+//				{"Trader-3", "Strategy-C", "USDT", "Buy", "1000", "2.59","15-January-2022"},
+//				{"Trader-1", "Strategy-A", "USDC", "Buy", "500", "150.3","16-January-2022"},
+//				{"Trader-2", "Strategy-B", "ADA", "Sell", "200", "50.2","16-January-2022"},
+//				{"Trader-3", "Strategy-C", "SOL", "Buy", "1000", "2.59","17-January-2022"},
+//				{"Trader-1", "Strategy-A", "ONE", "Buy", "500", "150.3","17-January-2022"},
+//				{"Trader-2", "Strategy-B", "MANA", "Sell", "200", "50.2","17-January-2022"},
+//				{"Trader-3", "Strategy-C", "AVAX", "Buy", "1000", "2.59","19-January-2022"},
+//				{"Trader-1", "Strategy-A", "LUNA", "Buy", "500", "150.3","19-January-2022"},
+//				{"Trader-2", "Strategy-B", "FTM", "Sell", "200", "50.2","19-January-2022"},
+//				{"Trader-3", "Strategy-C", "HNT", "Buy", "1000", "2.59","20-January-2022"}
+//			};
+//	
 
 		JTable table = new JTable(data, columnNames);
 		//table.setPreferredSize(new Dimension(600, 300));
@@ -196,16 +220,31 @@ public class DataVisualizationCreator {
 		MainUI.getInstance().updateStats(chartPanel);
 	}
 	
-	private void createBar() {
+	private void createBar(ArrayList<TradeActivity> trade) {
 		
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 //		Those are hard-coded values!!!! 
 //		You will have to come up with a proper datastructure to populate the BarChart with live data!
-		dataset.setValue(6, "Trader-1", "Strategy-A");
-		dataset.setValue(5, "Trader-2", "Strategy-B");
-		dataset.setValue(0, "Trader-3", "Strategy-E");
-		dataset.setValue(1, "Trader-4", "Strategy-C");
-		dataset.setValue(10, "Trader-5", "Strategy-D");
+		ArrayList<TradingBroker> brokerID = new ArrayList<TradingBroker>();
+		ArrayList<Integer> numOfTrades = new ArrayList<Integer>();
+		for(int i = 0; i < trade.size(); i++) {
+			boolean flag = true;
+			for(int j = 0; j < brokerID.size(); j++) {
+				if(trade.get(i).getTradingBroker().getTradingBrokerID() == brokerID.get(j).getTradingBrokerID()) {
+					numOfTrades.set(j, numOfTrades.get(j) + 1);
+					j = brokerID.size();
+					flag = false;
+				}
+			}
+			if(flag) {
+				TradingBroker broker = new TradingBroker(trade.get(i).getTradingBroker().getTradingBroker(), trade.get(i).getTradingBroker().getTradingBrokerID());
+				brokerID.add(broker);
+				numOfTrades.add(1);
+			}	
+		}
+		for(int i = 0; i < brokerID.size(); i++) {
+			dataset.setValue(numOfTrades.get(i), brokerID.get(i).getTradingBroker(), trade.get(i).getTradingBroker().getTradingBroker());
+		}
 
 		CategoryPlot plot = new CategoryPlot();
 		BarRenderer barrenderer1 = new BarRenderer();

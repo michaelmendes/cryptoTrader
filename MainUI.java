@@ -29,6 +29,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import cryptoTrader.utils.DataVisualizationCreator;
+import cryptoTrader.utils.Operation;
+//import cryptoTrader.utils.Result;
+import cryptoTrader.utils.TradeActivity;
 
 public class MainUI extends JFrame implements ActionListener {
 	/**
@@ -38,7 +41,9 @@ public class MainUI extends JFrame implements ActionListener {
 
 	private static MainUI instance;
 	private JPanel stats, chartPanel, tablePanel;
-
+	
+	private ArrayList<TradeActivity> activities = new ArrayList<TradeActivity>();
+	
 	// Should be a reference to a separate object in actual implementation
 	private List<String> selectedList;
 
@@ -67,50 +72,14 @@ public class MainUI extends JFrame implements ActionListener {
 		super("Crypto Trading Tool");
 
 		// Set top bar
-
-
 		JPanel north = new JPanel();
-
-//		north.add(strategyList);
-
-		// Set bottom bar
-//		JLabel from = new JLabel("From");
-//		UtilDateModel dateModel = new UtilDateModel();
-//		Properties p = new Properties();
-//		p.put("text.today", "Today");
-//		p.put("text.month", "Month");
-//		p.put("text.year", "Year");
-//		JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, p);
-//		@SuppressWarnings("serial")
-//		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new AbstractFormatter() {
-//			private String datePatern = "dd/MM/yyyy";
-//
-//			private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePatern);
-//
-//			@Override
-//			public Object stringToValue(String text) throws ParseException {
-//				return dateFormatter.parseObject(text);
-//			}
-//
-//			@Override
-//			public String valueToString(Object value) throws ParseException {
-//				if (value != null) {
-//					Calendar cal = (Calendar) value;
-//					return dateFormatter.format(cal.getTime());
-//				}
-//
-//				return "";
-//			}
-//		});
 
 		JButton trade = new JButton("Perform Trade");
 		trade.setActionCommand("refresh");
 		trade.addActionListener(this);
-
-
-
-		JPanel south = new JPanel();
 		
+		// set bottom bar
+		JPanel south = new JPanel();
 		south.add(trade);
 
 		dtm = new DefaultTableModel(new Object[] { "Trading Client", "Coin List", "Strategy Name" }, 1);
@@ -140,9 +109,9 @@ public class MainUI extends JFrame implements ActionListener {
 		
 
 		JPanel east = new JPanel();
-//		east.setLayout();
+
 		east.setLayout(new BoxLayout(east, BoxLayout.Y_AXIS));
-//		east.add(table);
+
 		east.add(scrollPane);
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
@@ -202,13 +171,16 @@ public class MainUI extends JFrame implements ActionListener {
 						return;
 					}
 					String strategyName = strategyObject.toString();
-					Operation operationObj = new Operation(traderName, coinNames, strategyName);
-					operationObj.print();
+					Operation operationObj = new Operation(traderName, count + 1, coinNames, strategyName);
+					TradeActivity activity = operationObj.executeTrade();
 					System.out.println(traderName + " " + Arrays.toString(coinNames) + " " + strategyName);
+					activities.add(activity);
 	        }
 			stats.removeAll();
-			DataVisualizationCreator creator = new DataVisualizationCreator();
-			creator.createCharts();
+			//Result result = new Result(activities);
+			DataVisualizationCreator display = new DataVisualizationCreator();
+			display.createCharts(activities);
+
 		} else if ("addTableRow".equals(command)) {
 			dtm.addRow(new String[3]);
 		} else if ("remTableRow".equals(command)) {

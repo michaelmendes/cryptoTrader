@@ -1,14 +1,12 @@
-package cryptoTrader.gui;
+package cryptoTrader.utils;
 
 public class TradingBroker {
 	private String tradingBroker;
-	private String[] coins;
-	private String strategy;
+	private int tradingBrokerID;
 	
-	public TradingBroker(String tradingBroker, String [] coins, String strategy) {
+	public TradingBroker(String tradingBroker, int tradingBrokerID) {
 		this.tradingBroker = tradingBroker;
-		this.coins = coins;
-		this.strategy = strategy;
+		this.tradingBrokerID = tradingBrokerID;
 	}
 	
 	
@@ -17,12 +15,9 @@ public class TradingBroker {
 	}
 	
 	
-	public String[] getCoins() {
-		return coins;
+	public int getTradingBrokerID() {
+		return tradingBrokerID;
 	}
 	
 	
-	public String getStrategy() {
-		return strategy;
-	}
 }
