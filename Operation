@@ -1,34 +1,39 @@
 package cryptoTrader.utils;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+
+import java.util.Arrays;
 
 public class Operation {
 		
-	private ArrayList<TradingBroker> tradeBrokers; 
-	private ArrayList<TradeActivity> tradeActivities;
+	private String tradingBroker;
+	private CryptocoinList coins;
+	private String tradingStrategy;
 		
-	public Operation(ArrayList<TradingBroker> brokerList) {
-		tradeBrokers = brokerList; 
+	public Operation(String tradingBroker, String[] coinList, String tradingStrategy) {
+		this.tradingBroker = tradingBroker;	
+		coins = new CryptocoinList(coinList);
+		this.tradingStrategy = tradingStrategy;
+		
 	}
 	
-	public void executeTrade() {
-		Iterator<TradingBroker> brokers = tradeBrokers.iterator();
-		// perform actions for each broker from table 
-		while (brokers.hasNext()) {
-			TradingBroker currBroker = brokers.next();
-			String name = currBroker.getName();
-			CryptocoinList coinList = currBroker.getCoinList();
-			String strategyName = currBroker.getStrategy();
-			
-			// attempt to perform the trade 
-			TradingStrategy strategy = new TradingStrategy(strategyName, coinList);
-			String tradeResult = strategy.performTrade();
-			String[] details = tradeResult.split(" ");
-			
-			// save the results of the trade as a trade activity object 
-			TradeActivity activity = new TradeActivity(details[0],details[1],details[2]);
-			tradeActivities.add(activity);
-		}
+	public String getTradingBroker() {
+		return tradingBroker;
+	}
+	
+	public CryptocoinList getCoins() {
+		return coins;
+	}
+	
+	public String tradingStrategy() {
+		return tradingStrategy;
+	}
+	
+	
+	public TradeActivity executeTrade() {
+		TradingStrategy obj = new TradingStrategy(tradingStrategy, coins);
+		String data = obj.performTrade();
+		String[] dataList = data.split(" ");
+		TradeActivity activity = new TradeActivity(dataList[0], dataList[1], dataList[2]);
+		return activity;
 	}
 }
