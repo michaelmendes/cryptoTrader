@@ -1,23 +1,21 @@
 package cryptoTrader.utils;
 
-
-import java.util.Arrays;
-
 public class Operation {
 		
-	private String tradingBroker;
+	private String name;
 	private CryptocoinList coins;
 	private String tradingStrategy;
+	private TradingBroker broker;
 		
-	public Operation(String tradingBroker, String[] coinList, String tradingStrategy) {
-		this.tradingBroker = tradingBroker;	
-		coins = new CryptocoinList(coinList);
-		this.tradingStrategy = tradingStrategy;
-		
+	public Operation(TradingBroker tradeBroker) {
+		name = broker.getName();	
+		coins = broker.getCoinList();
+		tradingStrategy = broker.getStrategy();
+		broker = tradeBroker;
 	}
 	
 	public String getTradingBroker() {
-		return tradingBroker;
+		return name;
 	}
 	
 	public CryptocoinList getCoins() {
@@ -28,12 +26,13 @@ public class Operation {
 		return tradingStrategy;
 	}
 	
-	
 	public TradeActivity executeTrade() {
 		TradingStrategy obj = new TradingStrategy(tradingStrategy, coins);
-		String data = obj.performTrade();
+		String data = obj.performTrade(); // returns a string of the format: action quantity coinName price
 		String[] dataList = data.split(" ");
-		TradeActivity activity = new TradeActivity(dataList[0], dataList[1], dataList[2]);
+		CryptoCoin coin = new CryptoCoin(dataList[2]);
+		coin.setCoinPrice(Double.parseDouble(dataList[3]));
+		TradeActivity activity = new TradeActivity(broker, dataList[0], dataList[1], coin);
 		return activity;
 	}
 }
