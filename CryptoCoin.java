@@ -9,6 +9,7 @@ public class CryptoCoin {
 	private double coinPrice;
 	private double coinMarketCap;
 	private double coinVolume;
+	private String strDate;
 	private DataFetcher fetcher;
 	
 	public CryptoCoin(String name) {
@@ -18,6 +19,7 @@ public class CryptoCoin {
 		coinPrice = 0.0;
 		coinMarketCap = 0.0;
 		coinVolume = 0.0;
+		strDate= null;
 	}
 	
 	public double getCoinPrice() {
@@ -32,26 +34,31 @@ public class CryptoCoin {
 		return coinVolume;
 	}
 	
-	public void setCoinPrice() {
+	public String getCoinName() {
+		return coinName;
+	}
+	
+	public String getDate() {
+		return strDate;
+	}
+	
+	public void setDate() {
 		Date date = new Date();  
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
-		String strDate = formatter.format(date);
+		strDate = formatter.format(date);
+	}
+	
+	public void setCoinPrice() {
 		
 		coinPrice = fetcher.getPriceForCoin(coinName, strDate);
 	}
 	
 	public void setCoinMarketCap() {
-		Date date = new Date();  
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
-		String strDate = formatter.format(date);
 		
 		coinMarketCap = fetcher.getMarketCapForCoin(coinName, strDate);
 	}
 	
 	public void setCoinVolume() {
-		Date date = new Date();  
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
-		String strDate = formatter.format(date);
 		
 		coinVolume = fetcher.getVolumeForCoin(coinName, strDate);
 	}
