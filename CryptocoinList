@@ -1,25 +1,41 @@
 package cryptoTrader.utils;
 
-import java.util.ArrayList;
 
 public class CryptocoinList {
 	
-	private Cryptocoin[] cryptoOfInterest;
-	private int numCoins = 0;
+	private CryptoCoin[] cryptoCoinList;
 	
-	public CryptocoinList(String[] coins) {
-		for (int i=0; i<coins.length; i++) {
-			Cryptocoin newCoin = new Cryptocoin(coins[i]);
-			cryptoOfInterest[numCoins] = newCoin;
-			numCoins++;
+	public CryptocoinList(String[] list) {
+		cryptoCoinList = new CryptoCoin[list.length];
+		for(int i = 0; i < list.length; i++) {
+			CryptoCoin coin = new CryptoCoin(list[i]); 
+			cryptoCoinList[i] = coin;
+			cryptoCoinList[i].fetchCoinPrice();
+			cryptoCoinList[i].setCoinMarketCap();
+			cryptoCoinList[i].setCoinVolume();
 		}
 	}
 	
-	public void addCoin(Cryptocoin newCoin) {
-		cryptoOfInterest[numCoins] = newCoin;
+	public CryptoCoin[] getCryptoCoinList() {
+		return cryptoCoinList;
 	}
 	
-	public Cryptocoin[] getList() {
-		return cryptoOfInterest;
+	public CryptoCoin getCoin(String coinName) {
+		for (int i=0; i<cryptoCoinList.length; i++) {
+			if (cryptoCoinList[i].getName().equals(coinName)) {
+				return cryptoCoinList[i];
+			}
+		}
+		return null;
+	}
+	
+	public String toString() {
+		String sList = "";
+		for (int i=0; i<cryptoCoinList.length; i++) {
+			sList += cryptoCoinList[i].getName() + ",";
+		}
+		return sList;
 	}
 }
+
+
