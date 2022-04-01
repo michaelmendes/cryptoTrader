@@ -14,6 +14,14 @@ public class TradeActivity {
 		strategy = tradingBroker.getStrategy();
 	}
 	
+	public TradeActivity(TradingBroker tradingBroker, String strategy) {
+		this.tradingBroker = tradingBroker;
+		this.strategy = strategy;
+		this.action = "failed_trade";
+		this.quantity = null;
+		this.coin = new CryptoCoin(null);
+	}
+	
 	public TradingBroker getTradingBroker() {
 		return tradingBroker;
 	}
