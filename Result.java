@@ -26,8 +26,9 @@ public class Result {
 			while (iterator.hasNext()) {
 				TradeActivity activity = iterator.next();
 				String line = activity.getTradingBroker().getName() + " " + activity.getTradingBroker().getCoinList().toString() 
-						+ " " + activity.getStrategy() + " " + activity.getAction() + activity.getQuantity() + 
-						activity.getCoin().getName() + " " + activity.getCoin().getCoinPrice() + "\n";
+						+ " " + activity.getStrategy() + " " + activity.getAction() + " " + activity.getQuantity() + " " +
+						activity.getCoin().getCoinName() + " " + activity.getCoin().getCoinPrice() + "\n";
+				System.out.println(line);
 				writer.write(line);
 			}
 			writer.close();
@@ -46,11 +47,14 @@ public class Result {
 			Scanner sc = new Scanner(file);
 			while (sc.hasNextLine()) {
 				String line = sc.nextLine();
-				String[] actList = line.split(" ");
+				String[] activityList = line.split(" ");
 				// store data as trade broker object 
-				TradingBroker broker = makeBroker(actList[0], actList[1], actList[2]);
-				CryptoCoin coin = broker.getCoinList().getCoin(actList[5]);
-				TradeActivity activity = new TradeActivity(broker, actList[3], actList[4], coin);
+				TradingBroker broker = makeBroker(activityList[0], activityList[1], activityList[2]);
+				CryptoCoin coin = null;
+				if (! activityList[3].equals("failed trade")) {
+					coin = broker.getCoinList().getCoin(activityList[5]);
+				}
+				TradeActivity activity = new TradeActivity(broker, activityList[3], activityList[4], coin);
 				updatedActs.add(activity);
 			}
 		} 
