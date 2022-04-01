@@ -5,16 +5,22 @@ import java.util.Arrays;
 
 public class Operation {
 		
-	private TradingBroker tradingBroker;
+	private String brokerName;
 	private CryptoCoinList coins;
 	private String tradingStrategy;
+	private TradingBroker tradingBroker;
 		
-	public Operation(String tradingBroker, int tradingBrokerID, String[] coinList, String tradingStrategy) {
-		this.tradingBroker = new TradingBroker(tradingBroker, tradingBrokerID);	
-		coins = new CryptoCoinList(coinList);
-		this.tradingStrategy = tradingStrategy;
+	public Operation(TradingBroker tradingBroker) {
+		this.tradingBroker = tradingBroker;
+		this.brokerName = tradingBroker.getName();
+		this.tradingStrategy = tradingBroker.getStrategy();
+		this.coins = tradingBroker.getCoinList();
 		
 	}
+	public String getBrokerName() {
+		return brokerName;
+	}
+	
 	
 	public TradingBroker getTradingBroker() {
 		return tradingBroker;
@@ -33,9 +39,9 @@ public class Operation {
 		TradeStrategy obj = new TradeStrategy(tradingStrategy, coins);
 		String data = obj.performTrade();
 		//String[] dataList = data.split(" ");
-		CryptoCoin[] list = coins.getCryptoCoinList();
 		String[] dataList = {"buy", "100", "bitcoin"};
 		CryptoCoin coin = new CryptoCoin(dataList[2]);
+		coin.setCoinPrice();
 		TradeActivity activity = new TradeActivity(tradingBroker, dataList[0], dataList[1], coin, tradingStrategy);
 		return activity;
 	}
