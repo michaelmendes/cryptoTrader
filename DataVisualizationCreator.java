@@ -76,7 +76,7 @@ public class DataVisualizationCreator {
 
 		for(int i = 0; i < arr.size(); i++) {
 			Object[] newRow = new Object[7];
-			newRow[0] = arr.get(i).getTradingBroker().getTradingBroker();
+			newRow[0] = arr.get(i).getTradingBroker().getName();
 			newRow[1] = arr.get(i).getStrategy();
 			newRow[2] = arr.get(i).getCoin().getCoinName();
 			newRow[3] = arr.get(i).getAction();
@@ -237,13 +237,16 @@ public class DataVisualizationCreator {
 				}
 			}
 			if(flag) {
-				TradingBroker broker = new TradingBroker(trade.get(i).getTradingBroker().getTradingBroker(), trade.get(i).getTradingBroker().getTradingBrokerID());
+				TradingBroker broker = new TradingBroker();
+				broker.setTradingBrokerID(trade.get(i).getTradingBroker().getTradingBrokerID());
+				broker.setStrategy(trade.get(i).getTradingBroker().getStrategy());
+				broker.setName(trade.get(i).getTradingBroker().getName());
 				brokerID.add(broker);
 				numOfTrades.add(1);
 			}	
 		}
 		for(int i = 0; i < brokerID.size(); i++) {
-			dataset.setValue(numOfTrades.get(i), brokerID.get(i).getTradingBroker(), trade.get(i).getTradingBroker().getTradingBroker());
+			dataset.setValue(numOfTrades.get(i), brokerID.get(i).getName(), brokerID.get(i).getStrategy());
 		}
 
 		CategoryPlot plot = new CategoryPlot();
