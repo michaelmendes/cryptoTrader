@@ -36,13 +36,18 @@ public class Operation {
 	
 	
 	public TradeActivity executeTrade() {
-		TradeStrategy obj = new TradeStrategy(tradingStrategy, coins);
+		TradingStrategy obj = new TradingStrategy(tradingStrategy, coins);
 		String data = obj.performTrade();
-		//String[] dataList = data.split(" ");
-		String[] dataList = {"buy", "100", "bitcoin"};
-		CryptoCoin coin = new CryptoCoin(dataList[2]);
-		coin.setCoinPrice();
-		TradeActivity activity = new TradeActivity(tradingBroker, dataList[0], dataList[1], coin, tradingStrategy);
-		return activity;
+		System.out.println(data);
+		String[] dataList = data.split(" ");
+		if(dataList[0].equals("failed")) {
+			TradeActivity activity = new TradeActivity(tradingBroker, tradingStrategy);
+			return activity;
+		}else {
+			CryptoCoin coin = new CryptoCoin(dataList[2]);
+			coin.setCoinPrice();
+			TradeActivity activity = new TradeActivity(tradingBroker, dataList[0], dataList[1], coin, tradingStrategy);
+			return activity;
+		}
 	}
 }

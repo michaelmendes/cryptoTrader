@@ -1,4 +1,4 @@
-package cryptoTrader.gui;
+package cryptoTrader.utils;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -28,12 +28,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import cryptoTrader.utils.CryptocoinList;
-import cryptoTrader.utils.DataVisualizationCreator;
-import cryptoTrader.utils.Operation;
-import cryptoTrader.utils.Result;
-import cryptoTrader.utils.TradeActivity;
-import cryptoTrader.utils.TradingBroker;
+//import cryptoTrader.utils.CryptocoinList;
+//import cryptoTrader.utils.Result;
 
 public class MainUI extends JFrame implements ActionListener {
 	/**
@@ -44,7 +40,7 @@ public class MainUI extends JFrame implements ActionListener {
 	private static MainUI instance;
 	private JPanel stats, chartPanel, tablePanel;
 	
-	private ArrayList<TradeActivity> activities;
+	private ArrayList<TradeActivity> activities = new ArrayList<TradeActivity>();
 	
 	// Should be a reference to a separate object in actual implementation
 	private List<String> selectedList;
@@ -173,7 +169,7 @@ public class MainUI extends JFrame implements ActionListener {
 					JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
 					return;
 				}
-				CryptoCoinList coinList = new CryptoCoinList (coinObject.toString().split(","));
+				CryptoCoinList coinList = new CryptoCoinList(coinObject.toString().split(","));
 				broker.setList(coinList);
 				
 				// set the broker's trading strategy 
