@@ -10,7 +10,7 @@ public class TradingStrategy {
 	public TradingStrategy(String strategy, CryptocoinList list) {
 		this.strategy = strategy;
 		this.list = list;
-		AvailableCryptoList available = new AvailableCryptoList();
+		AvailableCryptoList available = new AvailableCryptoList().getInstance();
 		availableCryptocoins = available.getAvailableCryptos();
 	}
 	
@@ -20,15 +20,15 @@ public class TradingStrategy {
 	
 	public String performTrade() {
 		if (strategy.equals("Strategy-A")) {	
-			if(!list.searchCryptoCoinList("bitcoin") || !contains(availableCryptocoins, "bitcoin")) {
+			if(!list.searchCryptoCoinList("BTC") || !contains(availableCryptocoins, "Bitcoin")) {
 				return "failed transaction";
 			}
 			else {	
-				CryptoCoin coin = list.getCoin("bitcoin");
+				CryptoCoin coin = list.getCoin("BTC");
 				coin.fetchCoinPrice();
 				double price = coin.getCoinPrice();
-				if(price < 500000) {
-					return "buy 100 BTC" + price;
+				if(price < 60000) {
+					return "buy 100 BTC " + price;
 				} 
 				else {
 					return "failed transaction";
@@ -37,11 +37,11 @@ public class TradingStrategy {
 		}
 		
 		else if (strategy.equals("Strategy-B")) {
-			if(!list.searchCryptoCoinList("ethereum") || !contains(availableCryptocoins, "ethereum")) {
+			if(!list.searchCryptoCoinList("ETH") || !contains(availableCryptocoins, "Ethereum")) {
 				return "failed transaction";
 			} 
 			else {
-				CryptoCoin coin = list.getCoin("ethereum");
+				CryptoCoin coin = list.getCoin("ETH");
 				coin.fetchCoinPrice();
 				double price = coin.getCoinPrice();
 				if (price > 4000) {
@@ -54,11 +54,11 @@ public class TradingStrategy {
 		} 
 		
 		else if (strategy.equals("Strategy-C")) {
-			if(!list.searchCryptoCoinList("dogecoin") || !contains(availableCryptocoins, "dogecoin")) {
+			if(!list.searchCryptoCoinList("DOGE") || !contains(availableCryptocoins, "Dogecoin")) {
 				return "failed transaction";
 			} 
 			else {
-				CryptoCoin coin = list.getCoin("Dogecoin");
+				CryptoCoin coin = list.getCoin("DOGE");
 				coin.fetchCoinPrice();
 				double price = coin.getCoinPrice();
 				if (price > 1) {
@@ -71,11 +71,11 @@ public class TradingStrategy {
 		}  
 		
 		else if (strategy.equals("Strategy-D")) {
-			if(!list.searchCryptoCoinList("bitcoin") || !contains(availableCryptocoins, "bitcoin")) {
+			if(!list.searchCryptoCoinList("BTC") || !contains(availableCryptocoins, "Bitcoin")) {
 				return "failed transaction";
 			} 
 			else {	
-				CryptoCoin coin = list.getCoin("bitcoin");
+				CryptoCoin coin = list.getCoin("BTC");
 				coin.fetchCoinPrice();
 				double price = coin.getCoinPrice();
 				if (price > 600000) {
