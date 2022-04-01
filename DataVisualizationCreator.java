@@ -82,7 +82,8 @@ public class DataVisualizationCreator {
 			newRow[3] = arr.get(i).getAction();
 			newRow[4] = arr.get(i).getQuantity().toString();
 			newRow[5] = arr.get(i).getCoin().getCoinPrice();
-			newRow[6] = "31-March-2022";
+			arr.get(i).getCoin().setDate();
+			newRow[6] = arr.get(i).getCoin().getDate();
 			data = insertRow(data, i, newRow);
 		}
 		
