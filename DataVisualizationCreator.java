@@ -28,8 +28,6 @@ import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
-import cryptoTrader.gui.MainUI;
-
 public class DataVisualizationCreator {
 	
 	public void createCharts(ArrayList<TradeActivity> trade) {
@@ -80,7 +78,7 @@ public class DataVisualizationCreator {
 			newRow[1] = arr.get(i).getStrategy();
 			newRow[2] = arr.get(i).getCoin().getCoinName();
 			newRow[3] = arr.get(i).getAction();
-			newRow[4] = arr.get(i).getQuantity().toString();
+			newRow[4] = arr.get(i).getQuantity();
 			newRow[5] = arr.get(i).getCoin().getCoinPrice();
 			arr.get(i).getCoin().setDate();
 			newRow[6] = arr.get(i).getCoin().getDate();
