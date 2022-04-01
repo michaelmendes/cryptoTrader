@@ -28,10 +28,12 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import cryptoTrader.utils.CryptocoinList;
 import cryptoTrader.utils.DataVisualizationCreator;
 import cryptoTrader.utils.Operation;
-//import cryptoTrader.utils.Result;
+import cryptoTrader.utils.Result;
 import cryptoTrader.utils.TradeActivity;
+import cryptoTrader.utils.TradingBroker;
 
 public class MainUI extends JFrame implements ActionListener {
 	/**
@@ -42,7 +44,7 @@ public class MainUI extends JFrame implements ActionListener {
 	private static MainUI instance;
 	private JPanel stats, chartPanel, tablePanel;
 	
-	private ArrayList<TradeActivity> activities = new ArrayList<TradeActivity>();
+	private ArrayList<TradeActivity> activities;
 	
 	// Should be a reference to a separate object in actual implementation
 	private List<String> selectedList;
@@ -153,34 +155,45 @@ public class MainUI extends JFrame implements ActionListener {
 		String command = e.getActionCommand();
 		if ("refresh".equals(command)) {
 			for (int count = 0; count < dtm.getRowCount(); count++){
-					Object traderObject = dtm.getValueAt(count, 0);
-					if (traderObject == null) {
-						JOptionPane.showMessageDialog(this, "please fill in Trader name on line " + (count + 1) );
-						return;
-					}
-					String traderName = traderObject.toString();
-					Object coinObject = dtm.getValueAt(count, 1);
-					if (coinObject == null) {
-						JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
-						return;
-					}
-					String[] coinNames = coinObject.toString().split(",");
-					Object strategyObject = dtm.getValueAt(count, 2);
-					if (strategyObject == null) {
-						JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
-						return;
-					}
-					String strategyName = strategyObject.toString();
-					Operation operationObj = new Operation(traderName, count + 1, coinNames, strategyName);
-					TradeActivity activity = operationObj.executeTrade();
-					System.out.println(traderName + " " + Arrays.toString(coinNames) + " " + strategyName);
-					activities.add(activity);
+				// create a new TradingBroker object 
+				TradingBroker broker = new TradingBroker();
+				broker.setTradingBrokerID(count + 1);
+				
+				// set the broker's name
+				Object traderObject = dtm.getValueAt(count, 0);
+				if (traderObject == null) {
+					JOptionPane.showMessageDialog(this, "please fill in Trader name on line " + (count + 1) );
+					return;
+				}
+				broker.setName(traderObject.toString());
+				
+				// set the broker's crypto of interest 
+				Object coinObject = dtm.getValueAt(count, 1);
+				if (coinObject == null) {
+					JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
+					return;
+				}
+				CryptoCoinList coinList = new CryptoCoinList (coinObject.toString().split(","));
+				broker.setList(coinList);
+				
+				// set the broker's trading strategy 
+				Object strategyObject = dtm.getValueAt(count, 2);
+				if (strategyObject == null) {
+					JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
+					return;
+				}
+				broker.setStrategy(strategyObject.toString());
+				
+				// attempt to perform a trade for this broker
+				TradeActivity activity = broker.declareInterest();
+				
+				System.out.println(broker.getName() + " " + broker.getCoinList().toString() + " " + broker.getStrategy());
+				// add the result of the trade to the activity log 
+				activities.add(activity);
 	        }
 			stats.removeAll();
-			//Result result = new Result(activities);
-			DataVisualizationCreator display = new DataVisualizationCreator();
-			display.createCharts(activities);
-
+			Result result = new Result(activities);
+			
 		} else if ("addTableRow".equals(command)) {
 			dtm.addRow(new String[3]);
 		} else if ("remTableRow".equals(command)) {
