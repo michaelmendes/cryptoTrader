@@ -5,11 +5,13 @@ public class TradingBroker {
 	private String name;
 	private CryptocoinList cryptoList;
 	private String strategy;
+	private int tradingBrokerID;
 	
 	public TradingBroker() {
 		name = null;
 		cryptoList = null;
 		strategy = null;
+		tradingBrokerID = 0;
 	}
 	
 	public void setName(String brokerName) {
@@ -22,6 +24,10 @@ public class TradingBroker {
 	
 	public void setStrategy(String newStrategy) {
 		strategy = newStrategy;
+	}
+	
+	public void setTradingBrokerID(int ID) {
+		tradingBrokerID = ID;
 	}
 	
 	public TradeActivity declareInterest() {
@@ -38,9 +44,12 @@ public class TradingBroker {
 		return cryptoList;
 	}
 	
-	
 	public String getStrategy() {
 		return strategy;
+	}
+	
+	public int getTradingBrokerID() {
+		return tradingBrokerID;
 	}
 	
 }
