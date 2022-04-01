@@ -13,7 +13,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class AvailableCryptoList {
+class AvailableCryptoList {
 	private static AvailableCryptoList instance = null;
 	
 	private Map<String, String> availableCryptosMap = new HashMap<>();
@@ -26,7 +26,7 @@ public class AvailableCryptoList {
 		return instance;
 	}
 	
-	private AvailableCryptoList() {
+	public AvailableCryptoList() {
 		findAvailableCryptos();
 	}
 	
@@ -110,5 +110,13 @@ public class AvailableCryptoList {
 	public String getCryptoID(String cryptoName) {
 		return availableCryptosMap.get(cryptoName);
 	}
-
+	
+	public static void main(String[] args) {
+		AvailableCryptoList newList = new AvailableCryptoList();
+		System.out.println(newList.getCryptoID("Bitcoin"));
+		String[] list = newList.getAvailableCryptos();
+		for (int i=0; i<list.length; i++) {
+			System.out.println(list[i]);
+		}
+	}
 }
