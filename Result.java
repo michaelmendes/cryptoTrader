@@ -28,7 +28,6 @@ public class Result {
 				String line = activity.getTradingBroker().getName() + " " + activity.getTradingBroker().getCoinList().toString() 
 						+ " " + activity.getStrategy() + " " + activity.getAction() + " " + activity.getQuantity() + " " +
 						activity.getCoin().getCoinName() + " " + activity.getCoin().getCoinPrice() + "\n";
-				System.out.println(line);
 				writer.write(line);
 			}
 			writer.close();
@@ -50,11 +49,15 @@ public class Result {
 				String[] activityList = line.split(" ");
 				// store data as trade broker object 
 				TradingBroker broker = makeBroker(activityList[0], activityList[1], activityList[2]);
-				CryptoCoin coin = null;
-				if (! activityList[3].equals("failed trade")) {
-					coin = broker.getCoinList().getCoin(activityList[5]);
+				TradeActivity activity;
+				if (activityList[3].equals("failed_trade")) {
+					activity = new TradeActivity(broker, broker.getStrategy());
 				}
-				TradeActivity activity = new TradeActivity(broker, activityList[3], activityList[4], coin);
+				else {
+					CryptoCoin coin = broker.getCoinList().getCoin(activityList[5]);
+					activity = new TradeActivity(broker, activityList[3], activityList[4], coin);
+				}
+				
 				updatedActs.add(activity);
 			}
 		} 
