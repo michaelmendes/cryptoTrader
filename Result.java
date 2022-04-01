@@ -55,6 +55,7 @@ public class Result {
 				}
 				else {
 					CryptoCoin coin = broker.getCoinList().getCoin(activityList[5]);
+					coin.setCoinPrice(Double.parseDouble(activityList[5]));
 					activity = new TradeActivity(broker, activityList[3], activityList[4], coin);
 				}
 				
