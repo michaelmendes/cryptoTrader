@@ -186,6 +186,9 @@ public class MainUI extends JFrame implements ActionListener {
 						
 						// attempt to perform a trade for this broker
 						TradeActivity activity = brokers.get(i).declareInterest();
+						if(activity.getAction().equals("failed trade")) {
+							brokers.get(i).failedStrategy();
+						}
 						
 						System.out.println(brokers.get(i).getName() + " " + brokers.get(i).getCoinList().toString() + " " + brokers.get(i).getStrategy());
 						// add the result of the trade to the activity log 
@@ -215,6 +218,9 @@ public class MainUI extends JFrame implements ActionListener {
 					System.out.println(broker.getName() + " " + broker.getCoinList().toString() + " " + broker.getStrategy());
 					// add the result of the trade to the activity log 
 					brokers.add(broker);
+					if(activity.getAction().equals("failed trade")) {
+						brokers.get(brokers.size() - 1).failedStrategy();
+					}
 					activities.add(activity);
 				}
 			}

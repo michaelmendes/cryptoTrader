@@ -26,6 +26,10 @@ public class TradingBroker {
 		strategy.add(newStrategy);
 	}
 	
+	public void failedStrategy() {
+		strategy.set(strategy.size() - 1, "failed trade");
+	}
+	
 	public void setTradingBrokerID(int ID) {
 		tradingBrokerID = ID;
 	}
