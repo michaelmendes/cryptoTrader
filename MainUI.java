@@ -155,42 +155,69 @@ public class MainUI extends JFrame implements ActionListener {
 		if ("refresh".equals(command)) {
 			for (int count = 0; count < dtm.getRowCount(); count++){
 				// create a new TradingBroker object 
-				TradingBroker broker = new TradingBroker();
-				brokers.add(broker);
-				brokers.get(brokers.size() - 1).setTradingBrokerID(brokers.size());
-				
 				// set the broker's name
 				Object traderObject = dtm.getValueAt(count, 0);
 				if (traderObject == null) {
 					JOptionPane.showMessageDialog(this, "please fill in Trader name on line " + (count + 1) );
 					return;
 				}
+				TradingBroker broker = new TradingBroker();
 				broker.setName(traderObject.toString());
-				
-				// set the broker's crypto of interest 
-				Object coinObject = dtm.getValueAt(count, 1);
-				if (coinObject == null) {
-					JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
-					return;
+				boolean flag = false;
+				for(int i = 0; i < brokers.size(); i++) {
+					if(broker.getName().equals(brokers.get(i).getName())) {
+						// set the broker's crypto of interest 
+						flag = true;
+						Object coinObject = dtm.getValueAt(count, 1);
+						if (coinObject == null) {
+							JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
+							return;
+						}
+						CryptoCoinList coinList = new CryptoCoinList(coinObject.toString().split(","));
+						brokers.get(i).setList(coinList);
+						
+						// set the broker's trading strategy 
+						Object strategyObject = dtm.getValueAt(count, 2);
+						if (strategyObject == null) {
+							JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
+							return;
+						}
+						brokers.get(i).setStrategy(strategyObject.toString());
+						
+						// attempt to perform a trade for this broker
+						TradeActivity activity = brokers.get(i).declareInterest();
+						
+						System.out.println(brokers.get(i).getName() + " " + brokers.get(i).getCoinList().toString() + " " + brokers.get(i).getStrategy());
+						// add the result of the trade to the activity log 
+						activities.add(activity);
+					}
 				}
-				CryptoCoinList coinList = new CryptoCoinList(coinObject.toString().split(","));
-				broker.setList(coinList);
-				
-				// set the broker's trading strategy 
-				Object strategyObject = dtm.getValueAt(count, 2);
-				if (strategyObject == null) {
-					JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
-					return;
+				if(!flag) {
+					Object coinObject = dtm.getValueAt(count, 1);
+					if (coinObject == null) {
+						JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
+						return;
+					}
+					CryptoCoinList coinList = new CryptoCoinList(coinObject.toString().split(","));
+					broker.setList(coinList);
+					
+					// set the broker's trading strategy 
+					Object strategyObject = dtm.getValueAt(count, 2);
+					if (strategyObject == null) {
+						JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
+						return;
+					}
+					broker.setStrategy(strategyObject.toString());
+					
+					// attempt to perform a trade for this broker
+					TradeActivity activity = broker.declareInterest();
+					
+					System.out.println(broker.getName() + " " + broker.getCoinList().toString() + " " + broker.getStrategy());
+					// add the result of the trade to the activity log 
+					brokers.add(broker);
+					activities.add(activity);
 				}
-				broker.setStrategy(strategyObject.toString());
-				
-				// attempt to perform a trade for this broker
-				TradeActivity activity = broker.declareInterest();
-				
-				System.out.println(broker.getName() + " " + broker.getCoinList().toString() + " " + broker.getStrategy());
-				// add the result of the trade to the activity log 
-				activities.add(activity);
-	        }
+			}
 			stats.removeAll();
 			Result result = new Result(activities, brokers);
 			
@@ -202,5 +229,4 @@ public class MainUI extends JFrame implements ActionListener {
 				dtm.removeRow(selectedRow);
 		}
 	}
-
 }

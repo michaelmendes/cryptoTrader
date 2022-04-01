@@ -34,7 +34,7 @@ public class DataVisualizationCreator {
 	
 	public void createCharts(ArrayList<TradeActivity> trade, ArrayList<TradingBroker> broker) {
 		createTableOutput(trade);
-		createBar(trade, broker);
+		createBar(broker);
 	}
 
 	
@@ -102,26 +102,33 @@ public class DataVisualizationCreator {
 	}
 	
 	
-	private void createBar(ArrayList<TradeActivity> trade, ArrayList<TradingBroker> brokers) {
+	private void createBar(ArrayList<TradingBroker> brokers) {
 		
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 //		Those are hard-coded values!!!! 
 //		You will have to come up with a proper datastructure to populate the BarChart with live data!
 		//ArrayList<TradingBroker> brokerID = new ArrayList<TradingBroker>();
-		ArrayList<Integer> numOfTrades = new ArrayList<Integer>();
-		for(int i = 0; i < brokers.size(); i++) {
-			numOfTrades.add(0);
-		}
+		String[] strategies = {"Strategy-A", "Strategy-B", "Strategy-C", "Strategy-D"};
 		
-		for(int i = 0; i < trade.size(); i++) {
-			//boolean flag = true;
-			for(int j = 0; j < brokers.size(); j++) {
-				if(trade.get(i).getTradingBroker().getTradingBrokerID() == brokers.get(j).getTradingBrokerID()) {
-					numOfTrades.set(j, numOfTrades.get(j) + 1);
-					j = brokers.size();
-					//flag = false;
+		for(int i = 0; i < brokers.size(); i++) {
+			int[] trades = new int[4];
+			for(int j = 0; j < brokers.get(i).getStrategyList().size(); j++) {
+				if(brokers.get(i).getStrategyList().get(j).equals(strategies[0])) {
+					trades[0] += 1;
+				}else if(brokers.get(i).getStrategyList().get(j).equals(strategies[1])) {
+					trades[1] += 1;
+				}else if(brokers.get(i).getStrategyList().get(j).equals(strategies[2])) {
+					trades[2] += 1;
+				}else if(brokers.get(i).getStrategyList().get(j).equals(strategies[3])) {
+					trades[3] += 1;
 				}
 			}
+			for(int j = 0; j < 4; j++) {
+				if(trades[j] > 0) {
+					dataset.setValue(trades[j], brokers.get(i).getName(), strategies[j]);
+				}
+			}
+		}
 //			if(flag) {
 //				TradingBroker broker = new TradingBroker();
 //				broker.setTradingBrokerID(trade.get(i).getTradingBroker().getTradingBrokerID());
@@ -130,10 +137,7 @@ public class DataVisualizationCreator {
 //				brokerID.add(broker);
 //				numOfTrades.add(1);
 //			}	
-		}
-		for(int i = 0; i < brokers.size(); i++) {
-			dataset.setValue(numOfTrades.get(i), brokers.get(i).getName(), brokers.get(i).getStrategy());
-		}
+
 
 		CategoryPlot plot = new CategoryPlot();
 		BarRenderer barrenderer1 = new BarRenderer();

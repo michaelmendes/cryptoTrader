@@ -1,15 +1,16 @@
 package cryptoTrader.utils;
+import java.util.ArrayList;
 
 public class TradingBroker {
 	private String name;
 	private CryptoCoinList cryptoList;
-	private String strategy;
+	private ArrayList<String> strategy;
 	private int tradingBrokerID;
 	
 	public TradingBroker() {
 		name = null;
 		cryptoList = null;
-		strategy = null;
+		strategy = new ArrayList<String>();
 		tradingBrokerID = 0;
 	}
 	
@@ -22,7 +23,7 @@ public class TradingBroker {
 	}
 	
 	public void setStrategy(String newStrategy) {
-		strategy = newStrategy;
+		strategy.add(newStrategy);
 	}
 	
 	public void setTradingBrokerID(int ID) {
@@ -45,6 +46,10 @@ public class TradingBroker {
 	
 	
 	public String getStrategy() {
+		return strategy.get(strategy.size() - 1);
+	}
+	
+	public ArrayList<String> getStrategyList(){
 		return strategy;
 	}
 	
