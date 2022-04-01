@@ -3,11 +3,8 @@ package cryptoTrader.utils;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -82,9 +79,9 @@ public class DataFetcher {
 	
 	public static void main(String[] args) {
 		DataFetcher fetcher = new DataFetcher();
-		double price = fetcher.getPriceForCoin("bitcoin", "08-09-2021");
-		double marketCap = fetcher.getMarketCapForCoin("bitcoin", "08-09-2021");
-		double volume = fetcher.getVolumeForCoin("bitcoin", "08-09-2021");
+		double price = fetcher.getPriceForCoin("bitcoin", "30-03-2022");
+		double marketCap = fetcher.getMarketCapForCoin("bitcoin", "30-03-2022");
+		double volume = fetcher.getVolumeForCoin("bticoin", "30-03-2022");
 		
 		System.out.println("Bitcoin=>\tPrice: " + price + 
 								"\n\t\tMarket Cap: " + marketCap + 
