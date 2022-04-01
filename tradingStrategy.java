@@ -5,111 +5,125 @@ import java.util.Date;
 public class tradingStrategy {
 
 	private String strategy;
-	
+
 	private CryptocoinList list;
-	
+
 	private DataFetcher fetcher;
-	
+
 	private String strDate;
-	
-	ArrayList<String> availableCryptocoins;
-	
+
+	private String[] availableCryptocoins;
+
 	public tradingStrategy(String strategy, CryptocoinList list) {
-		
+
 		fetcher = new DataFetcher();
 		this.strategy = strategy;
 		this.list = list;
-	
-		Date date = new Date();  
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
+
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		String strDate = formatter.format(date);
-		
+
 		this.strDate = strDate;
-		
+
 		AvailableCryptoList available = new AvailableCryptoList();
-		
+
 		availableCryptocoins = available.getAvailableCryptos();
-		
+
 	}
-	
-	
+
 	public void setStrategy(String strategy) {
 		this.strategy = strategy;
 	}
-	
+
 	public String performTrade() {
-	
-		if(strategy.equals("Strategy A")) {
-			
-			if(!list.search("bitcoin") || !availableCryptocoins.contains("bitcoin")) {
+
+		if (strategy.equals("Strategy A")) {
+
+			if (!list.search("bitcoin") || !contains(availableCryptocoins, "bitcoin")) {
 				return "failed transaction";
-			}else {
-				
+			} else {
+
 				double price = fetcher.getPriceForCoin("bitcoin", strDate);
-				
-				if(price < 500000) {
-					
+
+				if (price < 500000) {
+
 					return "buy 100 BTC";
-				
-				} else return "failed transaction";
-				
+
+				} else
+					return "failed transaction";
+
 			}
-			
-		} else if(strategy.equals("Strategy B")) {
-			
-			if(!list.search("ethereum") || !availableCryptocoins.contains("ethereum")) {
+
+		} else if (strategy.equals("Strategy B")) {
+
+			if (!list.search("ethereum") || !contains(availableCryptocoins, "ethereum")) {
 				return "failed transaction";
-			
+
 			} else {
-				
+
 				double price = fetcher.getPriceForCoin("ethereum", strDate);
-				
+
 				if (price > 4000) {
-					
+
 					return "sell 50 ETH";
-				
-				} else return "failed transaction";
-				
+
+				} else
+					return "failed transaction";
+
 			}
-			
-		} else if(strategy.equals("Strategy C")) {
-			
-			if(!list.search("dogecoin") || !availableCryptocoins.contains("dogecoin")) {
+
+		} else if (strategy.equals("Strategy C")) {
+
+			if (!list.search("dogecoin") || !contains(availableCryptocoins, "dogecoin")) {
 				return "failed transaction";
-			
+
 			} else {
-				
+
 				double price = fetcher.getPriceForCoin("Dogecoin", strDate);
-				
+
 				if (price > 1) {
-					
+
 					return "sell 400 DOGE";
-				
-				} else return "failed transaction";
-				
+
+				} else
+					return "failed transaction";
+
 			}
-			 
-		}  else if(strategy.equals("Strategy D")) {
-			
-			if(!list.search("bitcoin") || !availableCryptocoins.contains("bitcoin")) {
+
+		} else if (strategy.equals("Strategy D")) {
+
+			if (!list.search("bitcoin") || !contains(availableCryptocoins, "bitcoin")) {
 				return "failed transaction";
-			
+
 			} else {
-				
+
 				double price = fetcher.getPriceForCoin("bitcoin", strDate);
-				
+
 				if (price > 600000) {
-					
+
 					return "sell 100 BTC";
-				
-				} else return "failed transaction";
-				
+
+				} else
+					return "failed transaction";
+
 			}
-			
+
 		}
-		
-		
+
 	}
-	
-	
+
+	public boolean contains(String[] list, String key) {
+
+		for (int i = 0; i < list.length; i++) {
+
+			if (list[i].equals(key))
+				return true;
+
+		}
+
+		return false;
+
+	}
+
 }
