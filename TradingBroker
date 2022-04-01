@@ -24,12 +24,23 @@ public class TradingBroker {
 		strategy = newStrategy;
 	}
 	
-	public void declareInterest(Cryptocoin coinOfInterest) {
-		cryptoList.addCoin(coinOfInterest);
+	public TradeActivity declareInterest() {
+		Operation operationObj = new Operation(this);
+		TradeActivity activity = operationObj.executeTrade();
+		return activity;
 	}
 	
-	public void attachStrategy() {
-		
+	public String getName() {
+		return name;
+	}
+	
+	public CryptocoinList getCoinList() {
+		return cryptoList;
+	}
+	
+	
+	public String getStrategy() {
+		return strategy;
 	}
 	
 }
