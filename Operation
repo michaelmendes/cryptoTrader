@@ -8,9 +8,9 @@ public class Operation {
 	private TradingBroker broker;
 		
 	public Operation(TradingBroker tradeBroker) {
-		name = broker.getName();	
-		coins = broker.getCoinList();
-		tradingStrategy = broker.getStrategy();
+		name = tradeBroker.getName();	
+		coins = tradeBroker.getCoinList();
+		tradingStrategy = tradeBroker.getStrategy();
 		broker = tradeBroker;
 	}
 	
