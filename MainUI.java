@@ -157,6 +157,7 @@ public class MainUI extends JFrame implements ActionListener {
 			for (int count = 0; count < dtm.getRowCount(); count++){
 				// create a new TradingBroker object 
 				TradingBroker broker = new TradingBroker();
+				broker.setTradingBrokerID(count + 1);
 				
 				// set the broker's name
 				Object traderObject = dtm.getValueAt(count, 0);
