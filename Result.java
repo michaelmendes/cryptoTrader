@@ -1,5 +1,6 @@
 package cryptoTrader.utils;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -10,18 +11,19 @@ import java.util.Scanner;
 
 public class Result {
 	
-	public Result(ArrayList<TradeActivity> activities) {
+	public Result(ArrayList<TradeActivity> activities, ArrayList<TradingBroker> brokers) {
 		storeResults(activities); // store new activities in file 
 		ArrayList<TradeActivity> updatedActivities = retrieveLog();
 		
 		DataVisualizationCreator creator = new DataVisualizationCreator();
-		creator.createCharts(updatedActivities);
+		creator.createCharts(activities, brokers);
 	}
 	
 	
 	private void storeResults(ArrayList<TradeActivity> activities) {
 		try {
-			FileWriter writer = new FileWriter("TradeLog");
+			FileWriter file = new FileWriter("TradeLog");
+			BufferedWriter writer = new BufferedWriter(file);
 			Iterator<TradeActivity> iterator = activities.iterator();
 			while (iterator.hasNext()) {
 				TradeActivity activity = iterator.next();
@@ -55,7 +57,7 @@ public class Result {
 				}
 				else {
 					CryptoCoin coin = broker.getCoinList().getCoin(activityList[5]);
-					coin.setCoinPrice(Double.parseDouble(activityList[5]));
+					coin.setCoinPrice(Double.parseDouble(activityList[6]));
 					activity = new TradeActivity(broker, activityList[3], activityList[4], coin);
 				}
 				
