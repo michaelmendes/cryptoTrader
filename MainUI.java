@@ -1,4 +1,4 @@
-package cryptoTrader.utils;
+package cryptoTrader.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -28,8 +28,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-//import cryptoTrader.utils.CryptocoinList;
-//import cryptoTrader.utils.Result;
+import cryptoTrader.utils.TradeActivity;
+import cryptoTrader.utils.CryptoCoinList;
+import cryptoTrader.utils.Result;
+import cryptoTrader.utils.TradingBroker;
 
 public class MainUI extends JFrame implements ActionListener {
 	/**
@@ -41,6 +43,7 @@ public class MainUI extends JFrame implements ActionListener {
 	private JPanel stats, chartPanel, tablePanel;
 	
 	private ArrayList<TradeActivity> activities = new ArrayList<TradeActivity>();
+	private ArrayList<TradingBroker> brokers = new ArrayList<TradingBroker>();
 	
 	// Should be a reference to a separate object in actual implementation
 	private List<String> selectedList;
@@ -153,7 +156,8 @@ public class MainUI extends JFrame implements ActionListener {
 			for (int count = 0; count < dtm.getRowCount(); count++){
 				// create a new TradingBroker object 
 				TradingBroker broker = new TradingBroker();
-				broker.setTradingBrokerID(count + 1);
+				brokers.add(broker);
+				brokers.get(brokers.size() - 1).setTradingBrokerID(brokers.size());
 				
 				// set the broker's name
 				Object traderObject = dtm.getValueAt(count, 0);
@@ -188,7 +192,7 @@ public class MainUI extends JFrame implements ActionListener {
 				activities.add(activity);
 	        }
 			stats.removeAll();
-			Result result = new Result(activities);
+			Result result = new Result(activities, brokers);
 			
 		} else if ("addTableRow".equals(command)) {
 			dtm.addRow(new String[3]);
