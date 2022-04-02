@@ -152,15 +152,27 @@ public class MainUI extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
+		ArrayList<Object> duplicateBroker = new ArrayList<Object>();
 		if ("refresh".equals(command)) {
+			for(int count = 0; count < dtm.getRowCount(); count++) {
+				Object traderObject = dtm.getValueAt(count, 0);
+				for(int i = 0; i < duplicateBroker.size(); i++) {
+					if(traderObject.equals(duplicateBroker.get(i))) {
+						JOptionPane.showMessageDialog(this, "please remove duplicate broker on line " + (count + 1) );
+						return;
+					}
+				}
+				duplicateBroker.add(traderObject);
+			}
 			for (int count = 0; count < dtm.getRowCount(); count++){
 				// create a new TradingBroker object 
 				// set the broker's name
 				Object traderObject = dtm.getValueAt(count, 0);
-				if (traderObject == null) {
+				if (traderObject == null || traderObject.toString().equals("")) {
 					JOptionPane.showMessageDialog(this, "please fill in Trader name on line " + (count + 1) );
 					return;
 				}
+				
 				TradingBroker broker = new TradingBroker();
 				broker.setName(traderObject.toString());
 				boolean flag = false;
@@ -169,7 +181,7 @@ public class MainUI extends JFrame implements ActionListener {
 						// set the broker's crypto of interest 
 						flag = true;
 						Object coinObject = dtm.getValueAt(count, 1);
-						if (coinObject == null) {
+						if (coinObject == null || coinObject.toString().equals("")) {
 							JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
 							return;
 						}
@@ -180,6 +192,9 @@ public class MainUI extends JFrame implements ActionListener {
 						Object strategyObject = dtm.getValueAt(count, 2);
 						if (strategyObject == null) {
 							JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
+							return;
+						}else if(strategyObject == "None") {
+							JOptionPane.showMessageDialog(this, "please select a strategy" + (count + 1));
 							return;
 						}
 						brokers.get(i).setStrategy(strategyObject.toString());
@@ -197,7 +212,7 @@ public class MainUI extends JFrame implements ActionListener {
 				}
 				if(!flag) {
 					Object coinObject = dtm.getValueAt(count, 1);
-					if (coinObject == null) {
+					if (coinObject == null || coinObject.toString().equals("")) {
 						JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
 						return;
 					}
@@ -208,6 +223,9 @@ public class MainUI extends JFrame implements ActionListener {
 					Object strategyObject = dtm.getValueAt(count, 2);
 					if (strategyObject == null) {
 						JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
+						return;
+					}else if(strategyObject == "None") {
+						JOptionPane.showMessageDialog(this, "please select a valid strategy");
 						return;
 					}
 					broker.setStrategy(strategyObject.toString());
