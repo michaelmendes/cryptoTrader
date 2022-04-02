@@ -216,7 +216,7 @@ public class MainUI extends JFrame implements ActionListener {
 						JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
 						return;
 					}
-					CryptoCoinList coinList = new CryptoCoinList(coinObject.toString().split(","));
+					CryptoCoinList coinList = new CryptoCoinList(coinObject.toString().replace(" ", "").split(","));
 					broker.setList(coinList);
 					
 					// set the broker's trading strategy 
