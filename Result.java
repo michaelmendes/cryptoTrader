@@ -1,5 +1,6 @@
 package cryptoTrader.utils;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -21,7 +22,8 @@ public class Result {
 	
 	private void storeResults(ArrayList<TradeActivity> activities) {
 		try {
-			FileWriter writer = new FileWriter("TradeLog");
+			FileWriter file = new FileWriter("TradeLog");
+			BufferedWriter writer = new BufferedWriter(file);
 			Iterator<TradeActivity> iterator = activities.iterator();
 			while (iterator.hasNext()) {
 				TradeActivity activity = iterator.next();
