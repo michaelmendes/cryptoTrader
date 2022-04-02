@@ -60,7 +60,6 @@ public class DataVisualizationCreator {
 			newRow[2] = arr.get(i).getCoin().getCoinName();
 			newRow[3] = arr.get(i).getAction();
 			newRow[4] = arr.get(i).getQuantity();
-			//arr.get(i).getCoin().fetchCoinPrice();
 			newRow[5] = arr.get(i).getCoin().getCoinPrice();
 			arr.get(i).getCoin().setDate();
 			newRow[6] = arr.get(i).getCoin().getDate();
