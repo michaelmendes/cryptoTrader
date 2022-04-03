@@ -6,10 +6,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -23,43 +19,55 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import cryptoTrader.utils.TradeActivity;
 import cryptoTrader.utils.CryptoCoinList;
-import cryptoTrader.utils.DataVisualizationCreator;
+import cryptoTrader.utils.Result;
 import cryptoTrader.utils.TradingBroker;
 
+/**
+ * Data: April 1, 2022
+ * This class generates the main user interface for adding brokers and performing trades. 
+ * @author Ethan and Michael  
+ * 
+ */
 public class MainUI extends JFrame implements ActionListener {
+	
 	/**
-	 * 
+	 * Unique serial version number
 	 */
 	private static final long serialVersionUID = 1L;
-
+	/**
+	 * represents the unique instance of this class 
+	 */
 	private static MainUI instance;
-	private JPanel stats, chartPanel, tablePanel;
-	
+	/**
+	 * represents the panel holding the stats of the performed trades 
+	 */
+	private JPanel stats;
+	/**
+	 * the arraylist containing all activities performed or failed
+	 */
 	private ArrayList<TradeActivity> activities = new ArrayList<TradeActivity>();
+	/**
+	 * the arraylist containing all input trading brokers 
+	 */
 	private ArrayList<TradingBroker> brokers = new ArrayList<TradingBroker>();
-	
-	// Should be a reference to a separate object in actual implementation
-	private List<String> selectedList;
-
-	private JTextArea selectedTickerList;
-//	private JTextArea tickerList;
-	private JTextArea tickerText;
-	private JTextArea BrokerText;
-	private JComboBox<String> strategyList;
-	private Map<String, List<String>> brokersTickers = new HashMap<>();
-	private Map<String, String> brokersStrategies = new HashMap<>();
-	private List<String> selectedTickers = new ArrayList<>();
-	private String selectedStrategy = "";
+	/**
+	 * the model for the table holding the input broker information 
+	 */
 	private DefaultTableModel dtm;
+	/**
+	 * the table containing the broker information 
+	 */
 	private JTable table;
 
+	/**
+	 * @return returns the instance of the MainUI class 
+	 */
 	public static MainUI getInstance() {
 		if (instance == null)
 			instance = new MainUI();
@@ -67,6 +75,9 @@ public class MainUI extends JFrame implements ActionListener {
 		return instance;
 	}
 
+	/**
+	 * The private constructor for this class that builds the table 
+	 */
 	private MainUI() {
 
 		// Set window title
@@ -85,7 +96,7 @@ public class MainUI extends JFrame implements ActionListener {
 
 		dtm = new DefaultTableModel(new Object[] { "Trading Client", "Coin List", "Strategy Name" }, 1);
 		table = new JTable(dtm);
-		// table.setPreferredSize(new Dimension(600, 300));
+
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Trading Client Actions",
 				TitledBorder.CENTER, TitledBorder.TOP));
@@ -105,7 +116,7 @@ public class MainUI extends JFrame implements ActionListener {
 		remRow.setActionCommand("remTableRow");
 		remRow.addActionListener(this);
 
-		scrollPane.setPreferredSize(new Dimension(800, 300));
+		scrollPane.setPreferredSize(new Dimension(600, 300));
 		table.setFillsViewportHeight(true);
 		
 
@@ -119,8 +130,6 @@ public class MainUI extends JFrame implements ActionListener {
 		buttons.add(addRow);
 		buttons.add(remRow);
 		east.add(buttons);
-//		east.add(selectedTickerListLabel);
-//		east.add(selectedTickersScrollPane);
 
 		// Set charts region
 		JPanel west = new JPanel();
@@ -134,14 +143,20 @@ public class MainUI extends JFrame implements ActionListener {
 		getContentPane().add(east, BorderLayout.EAST);
 		getContentPane().add(west, BorderLayout.CENTER);
 		getContentPane().add(south, BorderLayout.SOUTH);
-//		getContentPane().add(west, BorderLayout.WEST);
 	}
 
+	/**
+	 * This method updates the stats in the table 
+	 * @param component represents the stats to be updated 
+	 */
 	public void updateStats(JComponent component) {
 		stats.add(component);
 		stats.revalidate();
 	}
 
+	/**
+	 * @param args used to test the class surpassing the LoginUI
+	 */
 	public static void main(String[] args) {
 		JFrame frame = MainUI.getInstance();
 		frame.setSize(900, 600);
@@ -149,6 +164,9 @@ public class MainUI extends JFrame implements ActionListener {
 		frame.setVisible(true);
 	}
 
+	/**
+	 * Determines the appropriate action to follow depending on which button was pressed 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
@@ -243,8 +261,7 @@ public class MainUI extends JFrame implements ActionListener {
 				}
 			}
 			stats.removeAll();
-			DataVisualizationCreator creator = new DataVisualizationCreator();
-			creator.createCharts(activities, brokers);
+			Result result = new Result(activities, brokers);
 			
 		} else if ("addTableRow".equals(command)) {
 			dtm.addRow(new String[3]);
@@ -254,4 +271,3 @@ public class MainUI extends JFrame implements ActionListener {
 				dtm.removeRow(selectedRow);
 		}
 	}
-}
