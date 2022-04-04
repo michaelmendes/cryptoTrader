@@ -4,16 +4,30 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * Date: April 1, 2022
+ * This class is responsible for checking the user credential database file, taking in the user's
+ * input data, and determining whether the user can log into the system. 
+ * @author Michael Mendes
+ *
+ */
 public class UserCredentials {
 	private String userName;
 	private String password;
 	private Boolean validUser = false;
 	
+	/**
+	 * @param userName is the user's input user name 
+	 * @param password is the user's input password 
+	 */
 	public UserCredentials(String userName, String password) {
 		this.userName = userName;
 		this.password = password;
 	}
 	
+	/**
+	 * @return returns true if the user is granted access or false if not 
+	 */
 	public Boolean login() {
 		File file = new File("CredentialsDB");
 		try {
