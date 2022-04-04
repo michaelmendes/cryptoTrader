@@ -1,8 +1,5 @@
 package cryptoTrader.utils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Date: April 2, 2022
  * @author David Burnett
@@ -60,15 +57,11 @@ public class CryptoCoin {
 		return strDate;
 	}
 	/**
-	 * Sets the current date
+	 * Sets the current date using the DateObject class
 	 */
 	public void setDate() {
-		/**
-		 * The following code block is from https://www.javatpoint.com/java-simpledateformat which retrieves the current date and formats it as specified
-		 */
-		Date date = new Date();  
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");  
-		strDate = formatter.format(date);
+		DateObject date = DateObject.getInstance();
+		strDate= date.strDate;
 	}
 	/**
 	 * Sets the price of the coin, and rounds it to 2 decimal places
