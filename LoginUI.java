@@ -16,15 +16,40 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import cryptoTrader.utils.UserCredentials;
 
+/**
+ * Date: April 1, 2022
+ * This is the UI that will be used to allow the user to login to the MainUI
+ * This class uses the Singleton design pattern in order to ensure there is only one accessible 
+ * 	instance of this class, as we do not want to open multiple sessions at once. 
+ * @author Michael Mendes
+ * 
+ */
 public class LoginUI extends JFrame implements ActionListener {
 	
+	/**
+	 * unique serial version number
+	 */
 	private static final long serialVersionUID = 1L;
-	
+	/**
+	 * the user's input user name
+	 */
 	private String userName;
+	/**
+	 * the user's input password
+	 */
 	private String password;
+	/**
+	 * the model for the table holding the user's credentials 
+	 */
 	private DefaultTableModel dtm;
+	/**
+	 * the table holding the user's credentials 
+	 */
 	private JTable table;
 	
+	/**
+	 * constructor for the class which generates the login user interface 
+	 */
 	private LoginUI() {
 		
 		// set window title 
@@ -59,6 +84,9 @@ public class LoginUI extends JFrame implements ActionListener {
 			
 	}
 	
+	/**
+	 * if user credentials are entered correctly then the MainUI is opened
+	 */
 	private void grantAccess() {	
 		JFrame mainFrame = MainUI.getInstance();
 		mainFrame.setSize(900, 600);
@@ -66,6 +94,10 @@ public class LoginUI extends JFrame implements ActionListener {
 		mainFrame.setVisible(true);		
 	}
 	
+	/**
+	 * @param args this is where we will launch the system from 
+	 * calls the constructor of the class 
+	 */
 	public static void main(String[] args) {
 		JFrame frame = new LoginUI();
 		frame.setSize(900, 600);
@@ -73,6 +105,10 @@ public class LoginUI extends JFrame implements ActionListener {
 		frame.setVisible(true);		
 	}
 
+	/**
+	 * sends the user credentials to the UserCredentials class in order to determine if the 
+	 * user may login to the system.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
