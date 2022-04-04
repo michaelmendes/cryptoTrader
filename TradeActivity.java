@@ -69,5 +69,9 @@ public class TradeActivity {
 	public void setStrategy(String strategy) {
 		this.strategy = strategy;
 	}
+
 	
+	public void update() {
+		System.out.println("Activity - Broker Name: " + tradingBroker.getName() + " Action: " + action + " Quantity: " + quantity + " Coin Name: " + coin.getCoinName() + " Strategy: " + strategy);
+	}
 }

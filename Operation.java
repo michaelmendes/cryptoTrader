@@ -8,6 +8,7 @@ import java.util.Arrays;
  * This class will hold the operation object which stores each operations broker,
  * coin list, and trading strategy. With these variables the class has a method
  * which executes the trade by recieving the appropriate action made by trade strategy.
+ * This class uses the Facade design pattern in the executeTrade method.
  * @author Ethan Borg and Michael Mendes
  * 
  */
@@ -75,9 +76,12 @@ public class Operation {
 	 * @return the TradeActivity object which holds the information for one trade
 	 */
 	public TradeActivity executeTrade() {
-		TradingStrategy obj = new TradingStrategy(tradingStrategy, coins);
-		String data = obj.performTrade();
-		System.out.println(data);
+//		TradingStrategy obj = new TradingStrategy(tradingStrategy, coins);
+//		String data = obj.performTrade();
+		DetermineStrategy determineStrategy = new DetermineStrategy();
+		TradingStrategies obj = determineStrategy.determineStrat(tradingStrategy);
+		StrategyContext stratContext = new StrategyContext(obj);
+		String data = stratContext.doTrade(tradingStrategy, coins);
 		String[] dataList = data.split(" ");
 		if(dataList[0].equals("failed")) {
 			TradeActivity activity = new TradeActivity(tradingBroker, tradingStrategy);

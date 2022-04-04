@@ -104,7 +104,6 @@ public class MainUI extends JFrame implements ActionListener {
 		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Trading Client Actions",
 				TitledBorder.CENTER, TitledBorder.TOP));
 		Vector<String> strategyNames = new Vector<String>();
-		strategyNames.add("None");
 		strategyNames.add("Strategy-A");
 		strategyNames.add("Strategy-B");
 		strategyNames.add("Strategy-C");
@@ -214,9 +213,6 @@ public class MainUI extends JFrame implements ActionListener {
 						if (strategyObject == null) {
 							JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
 							return;
-						}else if(strategyObject == "None") {
-							JOptionPane.showMessageDialog(this, "please select a strategy on line " + (count + 1));
-							return;
 						}
 						brokers.get(i).setStrategy(strategyObject.toString());
 						
@@ -246,9 +242,6 @@ public class MainUI extends JFrame implements ActionListener {
 					Object strategyObject = dtm.getValueAt(count, 2);
 					if (strategyObject == null) {
 						JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
-						return;
-					}else if(strategyObject == "None") {
-						JOptionPane.showMessageDialog(this, "please select a valid strategy");
 						return;
 					}
 					broker.setStrategy(strategyObject.toString());
