@@ -32,6 +32,8 @@ import cryptoTrader.utils.TradingBroker;
 /**
  * Data: April 1, 2022
  * This class generates the main user interface for adding brokers and performing trades. 
+ * This class implements the Singleton design pattern in order to generate a single object of the type MainUI, so we can 
+ * 	have a unique reference point to access the instance variables of this object. 
  * This class implements the proxy design pattern when a new row is created.
  * It also uses the observer design pattern as it notifies the broker and activity arrayList object when changes are made
  * @author Ethan and Michael  
