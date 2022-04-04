@@ -30,14 +30,35 @@ import org.jfree.data.time.TimeSeriesCollection;
 
 import cryptoTrader.gui.MainUI;
 
+/**
+ * Date: April 3, 2022
+ * This class is used to display the results of the tradeActivities to each specified broker
+ * @author Ethan Borg
+ *
+ */
 public class DataVisualizationCreator {
 	
+	
+	/**
+	 * This method calls the other methods of the class with and ArrayList of 
+	 * trade activities and ArrayList of trading brokers
+	 * @param trade is the ArrayList of all the activites to be presented
+	 * @param broker is the ArrayList of all the brokers that have performed trades
+	 */
 	public void createCharts(ArrayList<TradeActivity> trade, ArrayList<TradingBroker> broker) {
 		createTableOutput(trade);
 		createBar(broker);
 	}
 
 	
+	/**
+	 * This method is a helper method for the createTableOutput method as it will
+	 * take an array and add it as a new row in the 2D array
+	 * @param arr is a 2D array containing the data to be displayed in the chart
+	 * @param rowNum is the row number that the array will be added to in the 2D array
+	 * @param newRow is the array that will be added to the 2D array
+	 * @return Object[][] which is the object containing the new 2D array with the 1D array added
+	 */
 	private Object[][] insertRow(Object[][] arr, int rowNum, Object[] newRow){
 		Object[][] newArr = new Object[arr.length + 1][];		
 		for(int i = 0; i < arr.length; i++) {
@@ -47,9 +68,11 @@ public class DataVisualizationCreator {
 		return newArr;
 	}
 	
-	
+	/**
+	 * This method creates the table output by creating a 2D array which will contain the data of the chart
+	 * @param arr is the ArrayList containing the activities that will be presented in the table
+	 */
 	private void createTableOutput(ArrayList<TradeActivity> arr) {
-		// Dummy dates for demo purposes. These should come from selection menu
 		Object[] columnNames = {"Trader","Strategy","CryptoCoin","Action","Quantity","Price","Date"};
 		Object[][] data = new Object[0][7];
 
@@ -65,23 +88,6 @@ public class DataVisualizationCreator {
 			data = insertRow(data, i, newRow);
 		}
 		
-		// Dummy data for demo purposes. These should come from actual fetcher
-//		Object [][] data = {
-//				{"Trader-1", "Strategy-A", "ETH", "Buy", "500", "150.3","13-January-2022"},
-//				{"Trader-2", "Strategy-B", "BTC", "Sell", "200", "50.2","13-January-2022"},
-//				{"Trader-3", "Strategy-C", "USDT", "Buy", "1000", "2.59","15-January-2022"},
-//				{"Trader-1", "Strategy-A", "USDC", "Buy", "500", "150.3","16-January-2022"},
-//				{"Trader-2", "Strategy-B", "ADA", "Sell", "200", "50.2","16-January-2022"},
-//				{"Trader-3", "Strategy-C", "SOL", "Buy", "1000", "2.59","17-January-2022"},
-//				{"Trader-1", "Strategy-A", "ONE", "Buy", "500", "150.3","17-January-2022"},
-//				{"Trader-2", "Strategy-B", "MANA", "Sell", "200", "50.2","17-January-2022"},
-//				{"Trader-3", "Strategy-C", "AVAX", "Buy", "1000", "2.59","19-January-2022"},
-//				{"Trader-1", "Strategy-A", "LUNA", "Buy", "500", "150.3","19-January-2022"},
-//				{"Trader-2", "Strategy-B", "FTM", "Sell", "200", "50.2","19-January-2022"},
-//				{"Trader-3", "Strategy-C", "HNT", "Buy", "1000", "2.59","20-January-2022"}
-//			};
-//	
-
 		JTable table = new JTable(data, columnNames);
 		//table.setPreferredSize(new Dimension(600, 300));
 		
@@ -100,12 +106,15 @@ public class DataVisualizationCreator {
 	}
 	
 	
+	/**
+	 * This is the method that will create a bar graph dipicting the 
+	 * number of trades that each broker has made and for each strategy that they have used
+	 * @param brokers is the ArrayList containing the brokers and the trades that they have made
+	 */
 	private void createBar(ArrayList<TradingBroker> brokers) {
 		
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-//		Those are hard-coded values!!!! 
-//		You will have to come up with a proper datastructure to populate the BarChart with live data!
-		//ArrayList<TradingBroker> brokerID = new ArrayList<TradingBroker>();
+
 		String[] strategies = {"Strategy-A", "Strategy-B", "Strategy-C", "Strategy-D"};
 		
 		for(int i = 0; i < brokers.size(); i++) {
@@ -127,15 +136,6 @@ public class DataVisualizationCreator {
 				}
 			}
 		}
-//			if(flag) {
-//				TradingBroker broker = new TradingBroker();
-//				broker.setTradingBrokerID(trade.get(i).getTradingBroker().getTradingBrokerID());
-//				broker.setStrategy(trade.get(i).getTradingBroker().getStrategy());
-//				broker.setName(trade.get(i).getTradingBroker().getName());
-//				brokerID.add(broker);
-//				numOfTrades.add(1);
-//			}	
-
 
 		CategoryPlot plot = new CategoryPlot();
 		BarRenderer barrenderer1 = new BarRenderer();
