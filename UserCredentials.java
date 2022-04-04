@@ -8,6 +8,7 @@ import java.util.Scanner;
  * Date: April 1, 2022
  * This class is responsible for checking the user credential database file, taking in the user's
  * input data, and determining whether the user can log into the system. 
+ * 
  * @author Michael Mendes
  *
  */
