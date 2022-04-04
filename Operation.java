@@ -81,7 +81,7 @@ public class Operation {
 		DetermineStrategy determineStrategy = new DetermineStrategy();
 		TradingStrategies obj = determineStrategy.determineStrat(tradingStrategy);
 		StrategyContext stratContext = new StrategyContext(obj);
-		String data = stratContext.doTrade(tradingStrategy, coins);
+		String data = stratContext.doTrade(coins);
 		String[] dataList = data.split(" ");
 		if(dataList[0].equals("failed")) {
 			TradeActivity activity = new TradeActivity(tradingBroker, tradingStrategy);

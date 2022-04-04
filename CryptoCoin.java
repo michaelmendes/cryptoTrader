@@ -71,7 +71,8 @@ public class CryptoCoin {
 		coinPrice = Math.round( coinPrice * 100.0)/100.0;
 	}
 	/**
-	 * Converts the coin's inputed abbreviation and uses the AvailableCryptoList class to retrieve the coin's cryptoID which is used to obtain the coin's price 
+	 * Converts the coin's inputed abbreviation and uses the AvailableCryptoList class 
+	 * to retrieve the coin's cryptoID which is used to obtain the coin's price 
 	 * @param cName: the name of the coin
 	 * @return the coin's cryptoID 
 	 */
