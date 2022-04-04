@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Date: April 2, 2022
  * @author David Burnett
- * This class creates one instance of the current date to be used to fetch coin prices
+ * This class creates one instance of the current date to be used to fetch coin prices, uses the singleton design pattern
  */
 public class DateObject {
 	/**
