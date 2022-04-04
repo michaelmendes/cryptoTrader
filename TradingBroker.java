@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Date: April 3, 2022
  * This class is the TradingBroker object which holds information about each 
  * trading broker that is used throughout the runtime of the program. The variables held are
- * the brokers name, teh list of coins they are requesting, the strategy they wish to use, 
+ * the brokers name, the list of coins they are requesting, the strategy they wish to use, 
  * and the tradingBrokerID which is used to track if brokers make multiple trades
  * @author Ethan Borg and Michael Mendes
  *
@@ -130,5 +130,9 @@ public class TradingBroker {
 	 */
 	public int getTradingBrokerID() {
 		return tradingBrokerID;
+	}
+	
+	public void update() {
+		System.out.println("Broker - Broker Name: " + name + " Coins: " + cryptoList + " Newest Strategy: " + getStrategy());
 	}
 }

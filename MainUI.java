@@ -32,6 +32,8 @@ import cryptoTrader.utils.TradingBroker;
 /**
  * Data: April 1, 2022
  * This class generates the main user interface for adding brokers and performing trades. 
+ * This class implements the proxy design pattern when a new row is created.
+ * It also uses the observer design pattern as it notifies the broker and activity arrayList object when changes are made
  * @author Ethan and Michael  
  * 
  */
@@ -224,9 +226,11 @@ public class MainUI extends JFrame implements ActionListener {
 							brokers.get(i).failedStrategy();
 						}
 						
-						System.out.println(brokers.get(i).getName() + " " + brokers.get(i).getCoinList().toString() + " " + brokers.get(i).getStrategy());
+						notifyAllBrokers();
+						
 						// add the result of the trade to the activity log 
 						activities.add(activity);
+						notifyAllActivities();
 					}
 				}
 				if(!flag) {
@@ -252,19 +256,21 @@ public class MainUI extends JFrame implements ActionListener {
 					// attempt to perform a trade for this broker
 					TradeActivity activity = broker.declareInterest();
 					
-					System.out.println(broker.getName() + " " + broker.getCoinList().toString() + " " + broker.getStrategy());
 					// add the result of the trade to the activity log 
 					brokers.add(broker);
+					notifyAllBrokers();
+					
 					if(activity.getAction().equals("failed trade")) {
 						brokers.get(brokers.size() - 1).failedStrategy();
 					}
 					activities.add(activity);
+					notifyAllActivities();
 				}
 			}
 			stats.removeAll();
 			DataVisualizationCreator creator = new DataVisualizationCreator();
 			creator.createCharts(activities, brokers);
-//			Result result = new Result(activities, brokers);
+			//Result result = new Result(activities, brokers);
 			
 		} else if ("addTableRow".equals(command)) {
 			dtm.addRow(new String[3]);
@@ -273,5 +279,30 @@ public class MainUI extends JFrame implements ActionListener {
 			if (selectedRow != -1)
 				dtm.removeRow(selectedRow);
 		}
+	}
+	
+	
+	/**
+	 * This method will loop through all the TradingBroker objects in the brokers
+	 * ArrayList and notify each by printing a statement listing all the values
+	 * of all the brokers in the TradingBroker ArrayList
+	 */
+	public void notifyAllBrokers() {
+		for(TradingBroker broker : brokers) {
+			broker.update();
+		}
+	}
+	
+	
+	/**
+	 * This method will loop through all the TradeActivity objects in the activities
+	 * ArrayList and notifies each by printing the statement listing all the values
+	 * of all teh activities in the TradeActivity ArrayList
+	 */
+	public void notifyAllActivities() {
+		for(TradeActivity activity : activities) {
+			activity.update();
+		}
+		System.out.println();
 	}
 }
