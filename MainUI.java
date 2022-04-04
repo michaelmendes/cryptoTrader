@@ -215,7 +215,7 @@ public class MainUI extends JFrame implements ActionListener {
 							JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
 							return;
 						}else if(strategyObject == "None") {
-							JOptionPane.showMessageDialog(this, "please select a strategy" + (count + 1));
+							JOptionPane.showMessageDialog(this, "please select a strategy on line " + (count + 1));
 							return;
 						}
 						brokers.get(i).setStrategy(strategyObject.toString());
