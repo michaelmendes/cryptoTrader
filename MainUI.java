@@ -25,6 +25,7 @@ import javax.swing.table.TableColumn;
 
 import cryptoTrader.utils.TradeActivity;
 import cryptoTrader.utils.CryptoCoinList;
+import cryptoTrader.utils.DataVisualizationCreator;
 import cryptoTrader.utils.Result;
 import cryptoTrader.utils.TradingBroker;
 
@@ -261,7 +262,9 @@ public class MainUI extends JFrame implements ActionListener {
 				}
 			}
 			stats.removeAll();
-			Result result = new Result(activities, brokers);
+			DataVisualizationCreator creator = new DataVisualizationCreator();
+			creator.createCharts(activities, brokers);
+//			Result result = new Result(activities, brokers);
 			
 		} else if ("addTableRow".equals(command)) {
 			dtm.addRow(new String[3]);
@@ -271,3 +274,4 @@ public class MainUI extends JFrame implements ActionListener {
 				dtm.removeRow(selectedRow);
 		}
 	}
+}

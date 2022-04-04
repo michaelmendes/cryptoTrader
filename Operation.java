@@ -44,9 +44,7 @@ public class Operation {
 			TradeActivity activity = new TradeActivity(tradingBroker, tradingStrategy);
 			return activity;
 		}else {
-			CryptoCoin coin = new CryptoCoin(dataList[2]);
-			coin.setCoinPrice(Double.parseDouble(dataList[3]));
-			TradeActivity activity = new TradeActivity(tradingBroker, dataList[0], dataList[1], coin, tradingStrategy);
+			TradeActivity activity = new TradeActivity(tradingBroker, dataList[0], dataList[1], coins.getCoin(dataList[2]), tradingStrategy);
 			return activity;
 		}
 	}

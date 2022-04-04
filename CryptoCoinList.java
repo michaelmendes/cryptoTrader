@@ -11,9 +11,8 @@ public class CryptoCoinList {
 		for(int i = 0; i < list.length; i++) {
 			CryptoCoin coin = new CryptoCoin(list[i]); 
 			cryptoCoinList[i] = coin;
+			cryptoCoinList[i].setDate();
 			cryptoCoinList[i].setCoinPrice();
-			cryptoCoinList[i].setCoinMarketCap();
-			cryptoCoinList[i].setCoinVolume();
 		}
 	}
 	
