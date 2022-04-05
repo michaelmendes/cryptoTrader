@@ -19,8 +19,8 @@ import cryptoTrader.utils.UserCredentials;
 /**
  * Date: April 1, 2022
  * This is the UI that will be used to allow the user to login to the MainUI
- * This class uses the Singleton design pattern in order to ensure there is only one accessible 
- * 	instance of this class, as we do not want to open multiple sessions at once. 
+ * This class implements the proxy design pattern as it acts as a proxy between the MainUI and 
+ * 	the UserCredentials class 
  * @author Michael Mendes
  * 
  */
