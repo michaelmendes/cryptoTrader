@@ -20,4 +20,4 @@ d) displaying on the UI the trading log and trading activity.
 
 ## Run Locally 
 1. Run this command to download code: git clone https://github.com/michaelmendes/cryptoTrader.git
-2. Run program from the MainUI class.
+2. Run program from the LoginUI class.
