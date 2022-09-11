@@ -17,3 +17,7 @@ d) displaying on the UI the trading log and trading activity.
   d) The Proxy design pattern was used for the login service. 
   e) The Singleton design pattern was used for creating and accessing a configuration object that holds all user selections. 
   f) The Observer design pattern was used to associate a result object with viewers which are notified.
+
+## Run Locally 
+1. Run this command to download code: git clone https://github.com/michaelmendes/cryptoTrader.git
+2. Run program from the MainUI class.
